@@ -1,0 +1,37 @@
+import { Insumo } from "../config/db";
+import { InsumoType } from "../types/serviceTypes";
+
+const getAll = async () => {
+  return await Insumo.findAll();
+};
+
+const save = async (insumo: InsumoType) => {
+  return await Insumo.create(insumo);
+};
+
+const update = async (id: number, insumo: InsumoType) => {
+  await Insumo.update(
+    {
+      tipo: insumo.tipo,
+      cantidadTotalEnBodega: insumo.cantidadTotalEnBodega,
+      cantidadDisponible: insumo.cantidadDisponible,
+      borrado: insumo.borrado,
+    },
+    {
+      where: { insumoId: id },
+    }
+  );
+  const updated = await Insumo.findByPk(id);
+  return updated;
+};
+
+const remove = async (id: number) => {
+  await Insumo.update(
+    { borrado: true },
+    {
+      where: { insumoId: id },
+    }
+  );
+};
+
+export { getAll, save, update, remove };
