@@ -30,4 +30,5 @@ export type AsignacionType = {
   cantidadAsignada: number;
   fechaAsignacion?: Date;
   borrado: boolean;
+  asignado: boolean;
 };

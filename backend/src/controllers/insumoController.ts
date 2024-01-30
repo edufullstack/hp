@@ -1,5 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { getAll, save, update, remove } from "../services/insumoService";
+import {
+  getAll,
+  getById,
+  save,
+  update,
+  remove,
+} from "../services/insumoService";
 import { InsumoType } from "../types/serviceTypes";
 
 export const getInsumos = async (
@@ -9,6 +15,19 @@ export const getInsumos = async (
 ) => {
   try {
     const insumos = await getAll();
+    res.status(200).json(insumos);
+  } catch (error) {
+    next(error);
+  }
+};
+export const getInsumosById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  try {
+    const insumos = await getById(Number(id));
     res.status(200).json(insumos);
   } catch (error) {
     next(error);

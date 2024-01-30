@@ -30,6 +30,11 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      asignado: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
       borrado: {
         type: DataTypes.BOOLEAN,
         allowNull: false,

@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getInsumos,
+  getInsumosById,
   saveInsumo,
   updateInsumo,
   removeInsumo,
@@ -15,6 +16,7 @@ const router = express.Router();
 //REVISAR QUE TENGAN BORRADO LOGICO
 
 router.get("/", getInsumos);
+router.get("/:id", getInsumosById);
 router.post("/", saveInsumo);
 router.put("/:id", updateInsumo);
 router.delete("/:id", removeInsumo);

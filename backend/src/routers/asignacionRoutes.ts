@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getAsignaciones,
+  getAsignacionesById,
   saveAsignaciones,
   updateAsignaciones,
   removeAsignaciones,
@@ -15,6 +16,7 @@ const router = express.Router();
 //REVISAR QUE TENGAN BORRADO LOGICO
 
 router.get("/", getAsignaciones);
+router.get("/:id", getAsignacionesById);
 router.post("/", saveAsignaciones);
 router.put("/:id", updateAsignaciones);
 router.delete("/:id", removeAsignaciones);

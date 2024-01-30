@@ -6,9 +6,14 @@ const getAll = async (): Promise<HospitalType[]> => {
 };
 
 const getByName = async (name: string): Promise<HospitalType | null> => {
-  return (await Hospital.findOne({
+  let hospitalFound = (await Hospital.findOne({
     where: { nombre: name },
   })) as unknown as HospitalType | null;
+  if (!hospitalFound) {
+    throw new Error("Not Found");
+  }
+
+  return hospitalFound;
 };
 
 const save = async (hospital: HospitalType) => {

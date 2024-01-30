@@ -13,7 +13,7 @@ export const getHospitals = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { name } = req.params;
+  const { name } = req.query;
 
   try {
     let hospitals: HospitalType[] | HospitalType | null;
@@ -24,7 +24,6 @@ export const getHospitals = async (
     } else {
       hospitals = await getAll();
     }
-
     res.status(200).json(hospitals);
   } catch (error) {
     next(error);

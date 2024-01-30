@@ -23,7 +23,7 @@ const handleError = (
 ) => {
   const { statusCode = 500, message } = err;
 
-  console.error(err.name);
+  console.error(err);
 
   res.status(statusCode).json({
     status: "error",

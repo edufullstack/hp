@@ -4,6 +4,17 @@ import { InsumoType } from "../types/serviceTypes";
 const getAll = async () => {
   return await Insumo.findAll();
 };
+const getById = async (id: number) => {
+  let insumos: any = await Insumo.findAll({
+    where: { insumoId: id },
+  });
+
+  if (!insumos) {
+    throw new Error("Not Found");
+  }
+
+  return insumos;
+};
 
 const save = async (insumo: InsumoType) => {
   return await Insumo.create(insumo);
@@ -34,4 +45,4 @@ const remove = async (id: number) => {
   );
 };
 
-export { getAll, save, update, remove };
+export { getAll, getById, save, update, remove };
