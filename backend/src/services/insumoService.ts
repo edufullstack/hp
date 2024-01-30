@@ -36,11 +36,11 @@ const update = async (id: number, insumo: InsumoType) => {
   return updated;
 };
 
-const remove = async (id: number) => {
+const remove = async (insumoId: number) => {
   await Insumo.update(
     { borrado: true },
     {
-      where: { insumoId: id },
+      where: { insumoId },
     }
   );
 };

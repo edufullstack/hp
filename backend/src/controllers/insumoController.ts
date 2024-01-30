@@ -81,10 +81,10 @@ export const removeInsumo = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const { insumoId } = req.params;
   try {
-    await remove(Number(id));
-    res.status(200).send(`Insumo con id ${id} eliminado con éxito`);
+    await remove(Number(insumoId));
+    res.status(200).json(`Insumo con id ${insumoId} eliminado con éxito`);
   } catch (error) {
     next(error);
   }

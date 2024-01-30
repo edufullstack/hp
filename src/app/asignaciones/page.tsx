@@ -33,9 +33,25 @@ const Asignaciones = () => {
     }
   };
 
-  const handleActualizarAsignacion = async (asignacionId: any) => {
+  const handleActualizarAsignacion = async ({
+    asignacionId,
+    cantidadDisponible,
+    cantidadAsignada,
+    insumoId,
+  }: {
+    asignacionId: number;
+    cantidadDisponible: number;
+    cantidadAsignada: number;
+    insumoId: number;
+  }) => {
     try {
-      await updateAsignacion(asignacionId);
+      console.log(insumoId);
+      await updateAsignacion({
+        asignacionId,
+        cantidadDisponible,
+        cantidadAsignada,
+        insumoId,
+      });
       // Aquí vuelves a obtener las asignaciones
       const data = await getAsignaciones();
       setAsignaciones(data);
@@ -61,7 +77,8 @@ const Asignaciones = () => {
             <p>Hospital: {asignacion.nombreHospital}</p>
             <p>Numero de casos covid: {asignacion.casosCovid}</p>
             <p>Insumo: {asignacion.nombreInsumo}</p>
-            <p>Cantidad: {asignacion.cantidadAsignada}</p>
+            <p>Cantidad disponible: {asignacion.cantidadDisponible}</p>
+            <p>Cantidad solicitada: {asignacion.cantidadAsignada}</p>
             <p>Asignado: {asignacion.asignado ? "Si" : "No"}</p>
           </div>
           {!asignacion.asignado ? (
@@ -79,11 +96,19 @@ const Asignaciones = () => {
           <p>Hospital: {asignacionSeleccionada.nombreHospital}</p>
           <p>Numero de casos covid: {asignacionSeleccionada.casosCovid}</p>
           <p>Insumo: {asignacionSeleccionada.nombreInsumo}</p>
-          <p>Cantidad: {asignacionSeleccionada.cantidadAsignada}</p>
+          <p>
+            Cantidad disponible: {asignacionSeleccionada.cantidadDisponible}
+          </p>
+          <p>Cantidad solicitada: {asignacionSeleccionada.cantidadAsignada}</p>
           <p>Asignado: {asignacionSeleccionada.asignado ? "Si" : "No"}</p>
           <button
             onClick={() =>
-              handleActualizarAsignacion(asignacionSeleccionada.asignacionId)
+              handleActualizarAsignacion({
+                asignacionId: asignacionSeleccionada.asignacionId,
+                cantidadDisponible: asignacionSeleccionada.cantidadDisponible,
+                cantidadAsignada: asignacionSeleccionada.cantidadAsignada,
+                insumoId: asignacionSeleccionada.insumoId,
+              })
             }
           >
             Enviar

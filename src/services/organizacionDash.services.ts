@@ -30,6 +30,31 @@ export const getInsumos = async () => {
     throw { statusCode: 500, error };
   }
 };
+export const updateInsumos = async ({
+  insumoId,
+  actualizarCantidad,
+}: {
+  insumoId: number;
+  actualizarCantidad: number;
+}) => {
+  try {
+    const insumos = await fetchData({
+      url: `insumos/${insumoId}`,
+      method: "PUT",
+      body: { cantidadDisponible: actualizarCantidad.toString() },
+    });
+    if (insumos.statusCode === 500) {
+      return { error: "Error en servidor", status: 500 };
+    }
+    if (insumos.statusCode === 400) {
+      return { error: "Error parametro faltante", status: 400 };
+    }
+
+    return insumos;
+  } catch (error) {
+    throw { statusCode: 500, error };
+  }
+};
 
 export const getHospitales = async () => {
   try {
@@ -76,8 +101,10 @@ export const getAsignaciones = async () => {
       );
       return {
         ...asignacion,
+        insumoId: insumo ? insumo.insumoId : "Desconocido",
         nombreInsumo: insumo ? insumo.tipo : "Desconocido",
         nombreHospital: hospital ? hospital.nombre : "Desconocido",
+        cantidadDisponible: insumo ? insumo.cantidadDisponible : "Desconocido",
         casosCovid: hospital
           ? hospital.numeroCasosCovidUltimoMes
           : "Desconocido",
@@ -150,12 +177,28 @@ export const saveHospital = async ({
   }
 };
 
-export const updateAsignacion = async (id: number) => {
+export const updateAsignacion = async ({
+  asignacionId,
+  cantidadDisponible,
+  cantidadAsignada,
+  insumoId,
+}: {
+  asignacionId: number;
+  cantidadDisponible: number;
+  cantidadAsignada: number;
+  insumoId: number;
+}) => {
   try {
+    if (cantidadDisponible < cantidadAsignada)
+      throw alert("Insumos insuficientes");
+    const actualizarCantidad = cantidadDisponible - cantidadAsignada;
+
     const asignado = await fetchData({
-      url: `asignaciones/${Number(id)}`,
+      url: `asignaciones/${Number(asignacionId)}`,
       method: "PUT",
-      body: { asignado: "true" },
+      body: {
+        asignado: "true",
+      },
     });
     if (asignado.statusCode === 500) {
       return { error: "Error en servidor", status: 500 };
@@ -163,6 +206,7 @@ export const updateAsignacion = async (id: number) => {
     if (asignado.statusCode === 400) {
       return { error: "Error parametro faltante", status: 400 };
     }
+    updateInsumos({ insumoId, actualizarCantidad });
 
     return asignado;
   } catch (error) {
@@ -209,6 +253,46 @@ export const getEntregas = async () => {
       };
     });
     return entregasEnriquecidas;
+  } catch (error) {
+    throw { statusCode: 500, error };
+  }
+};
+
+export const removeInsumo = async (insumoId: number) => {
+  try {
+    const insumo = await fetchData({
+      url: `insumos/${insumoId}`,
+      method: "DELETE",
+      body: {},
+    });
+    if (insumo.statusCode === 500) {
+      return { error: "Error en servidor", status: 500 };
+    }
+    if (insumo.statusCode === 400) {
+      return { error: "Error parametro faltante", status: 400 };
+    }
+
+    return insumo;
+  } catch (error) {
+    throw { statusCode: 500, error };
+  }
+};
+
+export const removeHospital = async (insumoId: number) => {
+  try {
+    const insumo = await fetchData({
+      url: `insumos/${insumoId}`,
+      method: "DELETE",
+      body: {},
+    });
+    if (insumo.statusCode === 500) {
+      return { error: "Error en servidor", status: 500 };
+    }
+    if (insumo.statusCode === 400) {
+      return { error: "Error parametro faltante", status: 400 };
+    }
+
+    return insumo;
   } catch (error) {
     throw { statusCode: 500, error };
   }

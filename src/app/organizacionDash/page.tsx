@@ -3,6 +3,7 @@
 import {
   getHospitales,
   getInsumos,
+  removeInsumo,
 } from "@/services/organizacionDash.services";
 import styles from "../page.module.css";
 import { useEffect, useState } from "react";
@@ -45,6 +46,11 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
   const handleShowCrearInsumo = () => {
     setShowCrear(!showCrear);
   };
+  const handleBorrarInsumo = async (insumoId: number) => {
+    const eliminado = await removeInsumo(insumoId);
+    alert(eliminado);
+    setActualizar(actualizar + 1);
+  };
 
   const handleHospital = () => {
     setShowHospitales(!showHospitales);
@@ -65,7 +71,6 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
     <div>
       <h1>Dashboard de la Organización</h1>
 
-      {/* Sección para crear insumos, hospitales y entregas */}
       <button onClick={handleInsumo}>Insumos</button>
 
       {showInsumos ? (
@@ -79,9 +84,15 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
         />
       ) : null}
       {showInsumos
-        ? insumos.map((item: any, index: number) => {
-            return <InsumosComponent key={index} item={item} />;
-          })
+        ? insumos
+            .filter((item: any) => !item.borrado)
+            .map((item: any, index: number) => (
+              <InsumosComponent
+                key={index}
+                item={item}
+                onBorrar={() => handleBorrarInsumo(item.insumoId)}
+              />
+            ))
         : null}
 
       <button onClick={handleHospital}>Hospitales</button>
@@ -96,9 +107,11 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
         />
       ) : null}
       {showHospitales
-        ? hospitales.map((hospital: any, index: number) => {
-            return <HospitalCard key={index} item={hospital} />;
-          })
+        ? hospitales
+            .filter((item: any) => !item.borrado)
+            .map((hospital: any, index: number) => {
+              return <HospitalCard key={index} item={hospital} />;
+            })
         : null}
 
       <Link href={"/asignaciones"}>
