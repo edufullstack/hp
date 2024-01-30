@@ -1,17 +1,11 @@
 const Footer = () => {
   return (
-    <footer
-      style={{
-        backgroundColor: "#000000",
-        padding: "20px",
-        textAlign: "center",
-      }}
-    >
+    <footer>
       <p>
         &copy; {new Date().getFullYear()} Mi Empresa. Todos los derechos
         reservados.
       </p>
-      <ul style={{ listStyleType: "none", padding: 0 }}>
+      <ul >
         <li>
           <a href="/about">Acerca de Nosotros</a>
         </li>

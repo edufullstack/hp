@@ -7,6 +7,7 @@ import Validate from "@/utils/validateLogin";
 import { Login } from "../types/global";
 import { getHospitalInfo } from "@/services/hospitalDash.services";
 import { setOrganizationInfo } from "@/services/organizacionDash.services";
+import Button from "@/components/Button/Button";
 
 export default function Home() {
   const [disabled, setDisabled] = useState(true);
@@ -65,19 +66,21 @@ export default function Home() {
   return (
     <div>
       {showLoginForm === "" ? (
-        <div>
+        <div className="login">
           <h1>Bienvenido a Nuestra Plataforma</h1>
           <p>Por favor, elige tu tipo de usuario:</p>
-          <button onClick={() => handleSelection("hospital")}>
-            Soy un Hospital
-          </button>
-          <button onClick={() => handleSelection("organizacion")}>
-            Soy una Organización
-          </button>
+          <div className="buttons">
+            <Button type="secondary" onClick={() => handleSelection("hospital")}>
+              Soy un Hospital
+            </Button>
+            <Button  onClick={() => handleSelection("organizacion")}>
+              Soy una Organización
+            </Button>
+          </div>
         </div>
       ) : showLoginForm === "hospital" ? (
         <form onSubmit={handleSubmitHospital}>
-          <h2>Ingrese nombre de hospital</h2>
+          <h1>Ingrese nombre de hospital</h1>
 
           <div>
             <label htmlFor="name">Nombre:</label>
@@ -92,11 +95,11 @@ export default function Home() {
             {errors.name ? errors.name : null}
           </div>
 
-          <button type="submit" disabled={disabled}>
+          <Button type="submit" disabled={disabled}>
             Entrar
-          </button>
+          </Button>
           <hr></hr>
-          <button onClick={() => handleSelection("")}>Regresar</button>
+          <Button onClick={() => handleSelection("")}>Regresar</Button>
         </form>
       ) : (
         <div>
