@@ -1,0 +1,30 @@
+.container_input{
+    display: flex ;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1rem;
+}
+input {
+	font-size: 1.2rem;
+	padding: 0.5rem 1rem;
+	padding-left: 35px;
+	outline: none;
+	background: #FFFFFF;
+	color: #000000;
+	border: 1px solid #C4D1EB;
+	border-radius: 5px;
+    border-radius: 2rem;
+    box-shadow: #5E5DF0 0 10px 20px -10px;
+    transition: .3s ease;
+    &:focus {
+        background: #F2F2F2;
+        border: 1px solid #5A7EC7;
+        border-radius: 10px;
+    }
+    &:placeholder {
+	    color: #DDDDDD;
+    }
+}
+

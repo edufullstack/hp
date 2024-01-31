@@ -2,9 +2,6 @@
   background-color: #333;
   color: white;
   padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .brandName {
@@ -13,6 +10,7 @@
   font-size: 1.5em;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   gap: 1rem;
 

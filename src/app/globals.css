@@ -6,6 +6,9 @@
   --font-mono: 'Poppins', sans-serif, ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
     "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
+    --font-text: 'Roboto Slab', sans-serif, ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+    "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
+    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -98,9 +101,20 @@ body {
 }
 h1, h2, h3, .title{
 
+  font-family: var(--font-mono);
+}
+.subtitle{
+  margin: 1rem 0rem;
+}
+.subtitle_back{
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  align-items: center;
 }
 p, span,li{
-  font-family: var(--font-mono);
+  font-family:  var(--font-text);
+
 }
 a {
   color: inherit;
@@ -117,6 +131,11 @@ a {
   background: rgb(29,34,220);
   background: linear-gradient(90deg, rgba(29,34,220,1) 0%, rgba(92,125,243,1) 0%, rgba(197,80,66,1) 66%, rgba(226,142,37,1) 100%);
   position: relative;
+}
+.container_app{
+  width: 80vw;
+  margin: auto;
+  
 }
 
 .login{
@@ -153,6 +172,7 @@ footer{
     width: 80%;
     margin: 0.5rem auto;
     li{
+      list-style-type: none;
       font-size: 0.9rem;
     }
   }

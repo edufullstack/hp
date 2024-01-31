@@ -8,6 +8,7 @@ import { Login } from "../types/global";
 import { getHospitalInfo } from "@/services/hospitalDash.services";
 import { setOrganizationInfo } from "@/services/organizacionDash.services";
 import Button from "@/components/Button/Button";
+import InputText from "@/components/Input/Input";
 
 export default function Home() {
   const [disabled, setDisabled] = useState(true);
@@ -79,13 +80,16 @@ export default function Home() {
           </div>
         </div>
       ) : showLoginForm === "hospital" ? (
-        <form onSubmit={handleSubmitHospital}>
-          <h1>Ingrese nombre de hospital</h1>
+        <form onSubmit={handleSubmitHospital} className="form_">
+          <div className="subtitle_back">
+            <Button onClick={() => handleSelection("")}>Regresar</Button>
+            <h2 className="subtitle">Ingrese nombre de hospital</h2>
+          </div>
 
-          <div>
-            <label htmlFor="name">Nombre:</label>
-            <input
-              type="text"
+          <div >
+            <label htmlFor="name"></label>
+            <InputText
+              label="Nombre"
               id="name"
               name="name"
               value={input.name}
@@ -98,8 +102,7 @@ export default function Home() {
           <Button type="submit" disabled={disabled}>
             Entrar
           </Button>
-          <hr></hr>
-          <Button onClick={() => handleSelection("")}>Regresar</Button>
+         
         </form>
       ) : (
         <div>
@@ -129,8 +132,6 @@ export default function Home() {
             </div>
 
             <button type="submit">Entrar</button>
-            <hr></hr>
-            <button onClick={() => handleSelection("")}>Regresar</button>
           </form>
         </div>
       )}
