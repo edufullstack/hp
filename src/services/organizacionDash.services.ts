@@ -30,6 +30,7 @@ export const getInsumos = async () => {
     throw { statusCode: 500, error };
   }
 };
+
 export const updateInsumos = async ({
   insumoId,
   actualizarCantidad,
@@ -101,9 +102,14 @@ export const getAsignaciones = async () => {
       );
       return {
         ...asignacion,
+
         insumoId: insumo ? insumo.insumoId : "Desconocido",
         nombreInsumo: insumo ? insumo.tipo : "Desconocido",
+        hospitalId: hospital ? hospital.hospitalId : "Desconocido",
         nombreHospital: hospital ? hospital.nombre : "Desconocido",
+        cantidadTotalEnBodega: insumo
+          ? insumo.cantidadTotalEnBodega
+          : "Desconocido",
         cantidadDisponible: insumo ? insumo.cantidadDisponible : "Desconocido",
         casosCovid: hospital
           ? hospital.numeroCasosCovidUltimoMes
@@ -229,7 +235,6 @@ export const getEntregas = async () => {
       return { error: "Error parametro faltante", status: 400 };
     }
 
-    // Suponiendo que getInsumos y getHospitales son funciones que obtienen todos los insumos y hospitales respectivamente
     const asignaciones = await getAsignaciones();
     const insumos = await getInsumos();
     const hospitales = await getHospitales();
@@ -247,6 +252,9 @@ export const getEntregas = async () => {
 
       return {
         ...entrega,
+        casosCovid: hospital
+          ? hospital.numeroCasosCovidUltimoMes
+          : "Desconocido",
         nombreInsumo: insumo ? insumo.tipo : "Desconocido",
         nombreHospital: hospital ? hospital.nombre : "Desconocido",
         asignado: asignacion ? asignacion.asignado : "Desconocido",
@@ -278,10 +286,10 @@ export const removeInsumo = async (insumoId: number) => {
   }
 };
 
-export const removeHospital = async (insumoId: number) => {
+export const removeHospital = async (id: number) => {
   try {
     const insumo = await fetchData({
-      url: `insumos/${insumoId}`,
+      url: `hospital/${id}`,
       method: "DELETE",
       body: {},
     });
@@ -293,6 +301,99 @@ export const removeHospital = async (insumoId: number) => {
     }
 
     return insumo;
+  } catch (error) {
+    throw { statusCode: 500, error };
+  }
+};
+
+export const saveEntregas = async ({
+  asignacionId,
+  hospitalId,
+  insumoId,
+  cantidadAsignada,
+  cantidadActualizarBodega,
+}: {
+  asignacionId: number;
+  hospitalId: number;
+  insumoId: number;
+  cantidadAsignada: number;
+  cantidadActualizarBodega: number;
+}) => {
+  try {
+    const hoy = new Date();
+    const fechaFormateada = hoy.toISOString();
+
+    const entregas = await fetchData({
+      url: `entregas/`,
+      method: "POST",
+      body: {
+        asignacionId: asignacionId.toString(),
+        hospitalId: hospitalId.toString(),
+        insumoId: insumoId.toString(),
+        cantidadEntregada: cantidadAsignada.toString(),
+        fechaEntrega: fechaFormateada.toString(),
+      },
+    });
+    if (entregas.statusCode === 500) {
+      return { error: "Error en servidor", status: 500 };
+    }
+    if (entregas.statusCode === 400) {
+      return { error: "Error parametro faltante", status: 400 };
+    }
+
+    await updateInsumosEntrega({
+      insumoId,
+      actualizarCantidad: cantidadActualizarBodega,
+    });
+    await removeAsignacion(asignacionId);
+
+    return entregas;
+  } catch (error) {
+    throw { statusCode: 500, error };
+  }
+};
+
+export const removeAsignacion = async (id: number) => {
+  try {
+    const asignacion = await fetchData({
+      url: `asignaciones/${id}`,
+      method: "DELETE",
+      body: {},
+    });
+    if (asignacion.statusCode === 500) {
+      return { error: "Error en servidor", status: 500 };
+    }
+    if (asignacion.statusCode === 400) {
+      return { error: "Error parametro faltante", status: 400 };
+    }
+
+    return asignacion;
+  } catch (error) {
+    throw { statusCode: 500, error };
+  }
+};
+
+export const updateInsumosEntrega = async ({
+  insumoId,
+  actualizarCantidad,
+}: {
+  insumoId: number;
+  actualizarCantidad: number;
+}) => {
+  try {
+    const insumos = await fetchData({
+      url: `insumos/${insumoId}`,
+      method: "PUT",
+      body: { cantidadTotalEnBodega: actualizarCantidad.toString() },
+    });
+    if (insumos.statusCode === 500) {
+      return { error: "Error en servidor", status: 500 };
+    }
+    if (insumos.statusCode === 400) {
+      return { error: "Error parametro faltante", status: 400 };
+    }
+
+    return insumos;
   } catch (error) {
     throw { statusCode: 500, error };
   }

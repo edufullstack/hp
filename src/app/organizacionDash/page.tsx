@@ -43,9 +43,11 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
   const handleInsumo = () => {
     setShowInsumos(!showInsumos);
   };
+
   const handleShowCrearInsumo = () => {
     setShowCrear(!showCrear);
   };
+
   const handleBorrarInsumo = async (insumoId: number) => {
     const eliminado = await removeInsumo(insumoId);
     alert(eliminado);
@@ -63,9 +65,7 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
     // Lógica para crear entrega
   };
 
-  const handleEliminar = (tipo: any, id: number) => {
-    // Lógica para eliminar insumo/hospital/entrega
-  };
+  const handleEliminarHospital = (id: number) => {};
 
   return (
     <div>
@@ -110,7 +110,13 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
         ? hospitales
             .filter((item: any) => !item.borrado)
             .map((hospital: any, index: number) => {
-              return <HospitalCard key={index} item={hospital} />;
+              return (
+                <HospitalCard
+                  key={index}
+                  item={hospital}
+                  onEliminar={() => handleBorrarInsumo(hospital.hospitalId)}
+                />
+              );
             })
         : null}
 

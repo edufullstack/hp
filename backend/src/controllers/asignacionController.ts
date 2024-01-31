@@ -104,7 +104,7 @@ export const removeAsignaciones = async (
   const { id } = req.params;
   try {
     await remove(Number(id));
-    res.status(200).send(`Asignacion con id ${id} eliminado con éxito`);
+    res.status(200).json(`Asignacion con id ${id} eliminado con éxito`);
   } catch (error) {
     next(error);
   }
