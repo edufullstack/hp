@@ -174,53 +174,57 @@ const Entregas = () => {
 					<Button onClick={handleSearch}>Buscar</Button>
 				</div>
 			</div>
-			<>
-				<div className="table_header table_row_entregas">
-					<p>
-						<strong>Hospital</strong>
-					</p>
-					<p>
-						<strong>Numero de casos covid</strong>
-					</p>
-					<p>
-						<strong>Insumo</strong>
-					</p>
-					<p>
-						<strong>Cantidad en bodega</strong>
-					</p>
-					<p>
-						<strong>Cantidad asignada</strong>
-					</p>
-					<p>
-						<strong>Asignado</strong>
-					</p>
-					<p>
-						<strong>Asignar</strong>
-					</p>
-				</div>
-				{asignacionesFiltradas
-					.filter(
-						(asignacion: any) => asignacion.asignado && !asignacion.borrado
-					)
-					.map((asignacion: any) => (
-						<div
-							key={asignacion.asignacionId}
-							className="table_row table_row_entregas ">
-							<p>{asignacion.nombreHospital}</p>
-							<p> {asignacion.casosCovid}</p>
-							<p> {asignacion.nombreInsumo}</p>
-							<p> {asignacion.cantidadTotalEnBodega}</p>
-							<p> {asignacion.cantidadAsignada}</p>
-							<p> {asignacion.asignado ? "Si" : "No"}</p>
+			{asignacionesFiltradas.length > 0 ? (
+				<>
+					<div className="table_header table_row_entregas">
+						<p>
+							<strong>Hospital</strong>
+						</p>
+						<p>
+							<strong>Numero de casos covid</strong>
+						</p>
+						<p>
+							<strong>Insumo</strong>
+						</p>
+						<p>
+							<strong>Cantidad en bodega</strong>
+						</p>
+						<p>
+							<strong>Cantidad asignada</strong>
+						</p>
+						<p>
+							<strong>Asignado</strong>
+						</p>
+						<p>
+							<strong>Asignar</strong>
+						</p>
+					</div>
+					{asignacionesFiltradas
+						.filter(
+							(asignacion: any) => asignacion.asignado && !asignacion.borrado
+						)
+						.map((asignacion: any) => (
+							<div
+								key={asignacion.asignacionId}
+								className="table_row table_row_entregas ">
+								<p>{asignacion.nombreHospital}</p>
+								<p> {asignacion.casosCovid}</p>
+								<p> {asignacion.nombreInsumo}</p>
+								<p> {asignacion.cantidadTotalEnBodega}</p>
+								<p> {asignacion.cantidadAsignada}</p>
+								<p> {asignacion.asignado ? "Si" : "No"}</p>
 
-							<input
-								type="radio"
-								name="asignacionSeleccionada"
-								onChange={() => handleSeleccionarAsignacion(asignacion)}
-							/>
-						</div>
-					))}
-			</>
+								<input
+									type="radio"
+									name="asignacionSeleccionada"
+									onChange={() => handleSeleccionarAsignacion(asignacion)}
+								/>
+							</div>
+						))}
+				</>
+			) : (
+				<p>No hay asignaciones para mostrar</p>
+			)}
 
 			<h2>Entregas</h2>
 			{entregasFiltradas.length > 0 ? (
