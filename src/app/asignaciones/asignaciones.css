@@ -1,23 +1,23 @@
 .form_insumos {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
-	flex-direction: column;
-	gap: 0.5rem;
-	.search {
-		width: 25rem;
-		display: flex;
-		align-items: center;
-		gap: 0.2rem;
-	}
-	.asignar_insumos {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		gap: 0.5rem;
-		width: 100%;
-	}
-	.right {
-		margin: 1rem 0 auto auto;
-	}
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.5rem;
+  .search {
+    width: 21rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+  .asignar_insumos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .right {
+    margin: 1rem 0 auto auto;
+  }
 }
