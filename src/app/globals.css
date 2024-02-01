@@ -133,6 +133,7 @@ a {
 }
 .container_body {
 	height: 100vh;
+	overflow: hidden;
 	background: rgb(29, 34, 220);
 	background: linear-gradient(
 		90deg,
