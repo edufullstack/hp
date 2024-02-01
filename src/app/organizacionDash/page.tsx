@@ -12,16 +12,19 @@ import InsumoForm from "@/components/InsumoForm";
 import HospitalForm from "@/components/HospitalForm";
 import HospitalCard from "@/components/HospitalCard";
 import Link from "next/link";
+import Button from "@/components/Button/Button";
+import { useRouter } from "next/navigation";
 
 const OrganizationDashboard = ({ hospitalName }: any) => {
   const [actualizar, setActualizar] = useState(0);
   const [insumos, setInsumos] = useState([]);
-  const [showInsumos, setShowInsumos] = useState(false);
   const [showCrear, setShowCrear] = useState(false);
   const [hospitales, setHospitales] = useState([]);
   const [showHospitales, setShowHospitales] = useState(false);
   const [showCrearHospital, setShowCrearHospital] = useState(false);
-
+  const [entregas, setEntregas] = useState([]);
+  const [showEntregas, setShowEntregas] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     const fetchInsumos = async () => {
       const data = await getInsumos();
@@ -35,9 +38,8 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
     fetchHospital();
   }, [actualizar]);
 
-  const handleInsumo = () => {
-    setShowInsumos(!showInsumos);
-  };
+  const [busqueda, setBusqueda] = useState("");
+  // Otras variables de estado que puedas necesitar
 
   const handleShowCrearInsumo = () => {
     setShowCrear(!showCrear);
@@ -56,76 +58,54 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
     setShowCrearHospital(!showCrearHospital);
   };
 
+  const handleCrearEntrega = () => {
+    // Lógica para crear entrega
+  };
+
+  const handleEliminarHospital = (id: number) => {};
+
   return (
     <div>
       <h1>Dashboard de la Organización</h1>
-
-      <button onClick={handleInsumo}>Insumos</button>
-
-      {showInsumos ? (
-        <button onClick={handleShowCrearInsumo}>Crear insumo</button>
-      ) : null}
-      {showInsumos ? (
-        <>
-          {showCrear && (
-            <InsumoForm
-              onActualizar={() => {
-                setActualizar((prev) => prev + 1);
-              }}
-            />
-          )}
-          {insumos.filter((item: any) => !item.borrado).length > 0 ? (
-            insumos
-              .filter((item: any) => !item.borrado)
-              .map((item: any, index: number) => (
-                <InsumosComponent
-                  key={index}
-                  item={item}
-                  onBorrar={() => handleBorrarInsumo(item.insumoId)}
-                />
-              ))
-          ) : (
-            <p>No existen insumos</p>
-          )}
-        </>
-      ) : null}
-
-      <button onClick={handleHospital}>Hospitales</button>
-      {showHospitales ? (
-        <button onClick={handleShowCrearHospital}>Crear hospital</button>
-      ) : null}
-      {showHospitales ? (
-        <>
-          {showCrearHospital && (
+      <div className="options">
+        <div className="insumos">
+          <Button type="secondary" onClick={() => router.push("/insumos")}>
+            Insumos
+          </Button>
+        </div>
+        <div className="hospitals">
+          <Button type="secondary" onClick={handleHospital}>
+            Hospitales
+          </Button>
+          {showHospitales ? (
+            <Button onClick={handleShowCrearHospital}>Crear hospital</Button>
+          ) : null}
+          {showCrearHospital ? (
             <HospitalForm
               onActualizar={() => {
                 setActualizar((prev) => prev + 1);
               }}
             />
-          )}
-          {hospitales.filter((item: any) => !item.borrado).length > 0 ? (
-            hospitales
-              .filter((item: any) => !item.borrado)
-              .map((hospital: any, index: number) => (
-                <HospitalCard
-                  key={index}
-                  item={hospital}
-                  onEliminar={() => handleBorrarInsumo(hospital.hospitalId)}
-                />
-              ))
-          ) : (
-            <p>No existen hospitales</p>
-          )}
-        </>
-      ) : null}
+          ) : null}
+          {showHospitales
+            ? hospitales
+                .filter((item: any) => !item.borrado)
+                .map((hospital: any, index: number) => {
+                  return (
+                    <HospitalCard
+                      key={index}
+                      item={hospital}
+                      onEliminar={() => handleBorrarInsumo(hospital.hospitalId)}
+                    />
+                  );
+                })
+            : null}
+        </div>
 
-      <Link href={"/asignaciones"}>
-        <button>Asignar insumos</button>
-      </Link>
-
-      <Link href={"/entregas"}>
-        <button>Entregados</button>
-      </Link>
+        <Button type="secondary" onClick={() => router.push("/entregas")}>
+          Entregados
+        </Button>
+      </div>
     </div>
   );
 };
