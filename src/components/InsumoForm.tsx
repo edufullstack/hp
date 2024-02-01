@@ -1,56 +1,59 @@
 import { saveInsumo } from "@/services/organizacionDash.services";
 import React, { useState } from "react";
+import InputText from "./Input/Input";
 
 const InsumoForm = ({ onActualizar }: { onActualizar: any }) => {
-  // Estados para cada campo del formulario
-  const [tipo, setTipo] = useState("");
-  const [cantidadTotalEnBodega, setCantidadTotalEnBodega] = useState("");
-  const [cantidadDisponible, setCantidadDisponible] = useState("");
+	// Estados para cada campo del formulario
+	const [tipo, setTipo] = useState("");
+	const [cantidadTotalEnBodega, setCantidadTotalEnBodega] = useState("");
+	const [cantidadDisponible, setCantidadDisponible] = useState("");
 
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
+	const handleSubmit = (event: any) => {
+		event.preventDefault();
 
-    const nuevoInsumo = {
-      tipo,
-      cantidadTotalEnBodega: cantidadTotalEnBodega,
-      cantidadDisponible: cantidadDisponible,
-    };
-    saveInsumo(nuevoInsumo);
-    setTipo("");
-    setCantidadTotalEnBodega("");
-    setCantidadDisponible("");
-    onActualizar();
-  };
+		const nuevoInsumo = {
+			tipo,
+			cantidadTotalEnBodega: cantidadTotalEnBodega,
+			cantidadDisponible: cantidadDisponible,
+		};
+		saveInsumo(nuevoInsumo);
+		setTipo("");
+		setCantidadTotalEnBodega("");
+		setCantidadDisponible("");
+		onActualizar();
+	};
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Tipo:</label>
-        <input
-          type="text"
-          value={tipo}
-          onChange={(e) => setTipo(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Cantidad Total en Bodega:</label>
-        <input
-          type="number"
-          value={cantidadTotalEnBodega}
-          onChange={(e) => setCantidadTotalEnBodega(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Cantidad Disponible:</label>
-        <input
-          type="number"
-          value={cantidadDisponible}
-          onChange={(e) => setCantidadDisponible(e.target.value)}
-        />
-      </div>
-      <button type="submit">Crear </button>
-    </form>
-  );
+	return (
+		<form onSubmit={handleSubmit} className="">
+			<InputText
+				label="Tipo"
+				id="type"
+				name="type"
+				value={tipo}
+				onChange={(e) => setTipo(e.target.value)}
+			/>
+
+			<InputText
+				label="Cantidad Total en Bodega"
+				type="number"
+				id="type"
+				name="cantidadTotalEnBodega"
+				value={cantidadTotalEnBodega}
+				onChange={(e) => setCantidadTotalEnBodega(e.target.value)}
+			/>
+
+			<InputText
+				label="Cantidad Disponible"
+				type="number"
+				id="cantidadDisponible"
+				name="cantidadDisponible"
+				value={cantidadDisponible}
+				onChange={(e) => setCantidadDisponible(e.target.value)}
+			/>
+
+			<button type="submit">Crear </button>
+		</form>
+	);
 };
 
 export default InsumoForm;

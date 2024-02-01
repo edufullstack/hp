@@ -4,7 +4,7 @@ import "./Button.css";
 interface ButtonProps {
 	children: ReactNode;
 	onClick?: () => void;
-	type?: "secondary" | "disabled" | "";
+	type?: "secondary" | "disabled" | "" | "submit";
 	disabled?: boolean;
 }
 const Button = ({
