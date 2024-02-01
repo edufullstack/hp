@@ -51,49 +51,54 @@ const Entregas = () => {
     cantidadAsignada: number;
     cantidadTotalEnBodega: number;
   }) => {
-    if (cantidadTotalEnBodega < cantidadAsignada) {
-      await Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Insumos insuficientes en bodega",
-      });
-      return;
-    }
+    const result = await Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Estás por actualizar la entrega",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, actualizar",
+      cancelButtonText: "Cancelar",
+    });
 
-    let cantidadActualizarBodega = cantidadTotalEnBodega - cantidadAsignada;
+    // Procede solo si el usuario confirma
+    if (result.isConfirmed) {
+      let cantidadActualizarBodega = cantidadTotalEnBodega - cantidadAsignada;
 
-    try {
-      let result = await saveEntregas({
-        asignacionId,
-        hospitalId,
-        insumoId,
-        cantidadAsignada,
-        cantidadActualizarBodega,
-      });
+      try {
+        let response = await saveEntregas({
+          asignacionId,
+          hospitalId,
+          insumoId,
+          cantidadAsignada,
+          cantidadActualizarBodega,
+        });
 
-      if (result.error) {
+        if (response.error) {
+          await Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo actualizar la entrega, inténtalo de nuevo",
+          });
+          return;
+        }
+
+        await Swal.fire({
+          icon: "success",
+          title: "Éxito",
+          text: "La entrega ha sido actualizada correctamente",
+        });
+
+        setActualizar(actualizar + 1);
+      } catch (error) {
+        console.error("Error al actualizar la entrega:", error);
         await Swal.fire({
           icon: "error",
           title: "Error",
           text: "No se pudo actualizar la entrega, inténtalo de nuevo",
         });
-        return;
       }
-
-      await Swal.fire({
-        icon: "success",
-        title: "Éxito",
-        text: "La entrega ha sido actualizada correctamente",
-      });
-
-      setActualizar(actualizar + 1);
-    } catch (error) {
-      console.error("Error al actualizar la entrega:", error);
-      await Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "No se pudo actualizar la entrega, inténtalo de nuevo",
-      });
     }
   };
 
