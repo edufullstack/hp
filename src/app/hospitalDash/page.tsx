@@ -14,9 +14,6 @@ const HospitalDashboard = ({ hospitalName }: any) => {
   const [insumos, setInsumos] = useState<boolean>(true);
   const [actualizar, setActualizar] = useState(0);
   const [mostrarPendientes, setMostrarPendientes] = useState(false);
-  // const [mostrarEntregados, setMostrarEntregados] = useState(false);
-  // const pedidosPendientes = pedidos.filter((item: any) => !item.entregado);
-  // const pedidosEntregados = pedidos.filter((item: any) => item.entregado);
 
   const solicitarInsumos = () => {
     setInsumos(false);
@@ -69,14 +66,7 @@ const HospitalDashboard = ({ hospitalName }: any) => {
         />
       </section>
 
-      {insumos ? (
-        <section>
-          <h2>Solicitar Insumos</h2>
-          <button onClick={solicitarInsumos}>Solicitar Insumos</button>
-        </section>
-      ) : (
-        <InsumosCard setInsumos={setInsumos} hospital={hospital} />
-      )}
+      <InsumosCard setInsumos={setInsumos} hospital={hospital} />
     </div>
   );
 };

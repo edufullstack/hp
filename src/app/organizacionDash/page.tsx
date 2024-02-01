@@ -18,12 +18,10 @@ import { useRouter } from "next/navigation";
 const OrganizationDashboard = ({ hospitalName }: any) => {
   const [actualizar, setActualizar] = useState(0);
   const [insumos, setInsumos] = useState([]);
-  const [showCrear, setShowCrear] = useState(false);
   const [hospitales, setHospitales] = useState([]);
   const [showHospitales, setShowHospitales] = useState(false);
   const [showCrearHospital, setShowCrearHospital] = useState(false);
-  const [entregas, setEntregas] = useState([]);
-  const [showEntregas, setShowEntregas] = useState(false);
+
   const router = useRouter();
   useEffect(() => {
     const fetchInsumos = async () => {
@@ -38,13 +36,6 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
     fetchHospital();
   }, [actualizar]);
 
-  const [busqueda, setBusqueda] = useState("");
-  // Otras variables de estado que puedas necesitar
-
-  const handleShowCrearInsumo = () => {
-    setShowCrear(!showCrear);
-  };
-
   const handleBorrarInsumo = async (insumoId: number) => {
     const eliminado = await removeInsumo(insumoId);
     alert(eliminado);
@@ -57,12 +48,6 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
   const handleShowCrearHospital = () => {
     setShowCrearHospital(!showCrearHospital);
   };
-
-  const handleCrearEntrega = () => {
-    // Lógica para crear entrega
-  };
-
-  const handleEliminarHospital = (id: number) => {};
 
   return (
     <div>

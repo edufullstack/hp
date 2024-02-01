@@ -6,12 +6,12 @@ import {
   removeAsignacion,
   updateAsignacion,
 } from "@/services/organizacionDash.services";
+import Swal from "sweetalert2";
 
 const Asignaciones = () => {
   const [asignaciones, setAsignaciones] = useState([]);
   const [asignacionSeleccionada, setAsignacionSeleccionada] =
     useState<any>(null);
-  const [showForm, setShowForm] = useState(false);
   const [terminoBusqueda, setTerminoBusqueda] = useState("");
   const [sortType, setSortType] = useState("");
   const [asignacionesFiltradas, setAsignacionesFiltradas] = useState([]);
@@ -26,8 +26,12 @@ const Asignaciones = () => {
     obtenerAsignacionesPendientes();
   }, [actualizar]);
 
+  useEffect(() => {
+    aplicarFiltrosYOrdenamiento();
+  }, [sortType, terminoBusqueda, asignaciones]);
+
   const aplicarFiltrosYOrdenamiento = () => {
-    let resultado = asignaciones.filter(
+    let resultado = [...asignaciones].filter(
       (asignacion: any) =>
         asignacion.nombreHospital
           .toLowerCase()
@@ -37,9 +41,9 @@ const Asignaciones = () => {
           .includes(terminoBusqueda.toLowerCase())
     );
 
-    if (sortType === "menor-casos-covid") {
+    if (sortType === "mayor-casos-covid") {
       resultado.sort((a: any, b: any) => b.casosCovid - a.casosCovid);
-    } else if (sortType === "mayor-casos-covid") {
+    } else if (sortType === "menor-casos-covid") {
       resultado.sort((a: any, b: any) => a.casosCovid - b.casosCovid);
     }
 
@@ -54,14 +58,6 @@ const Asignaciones = () => {
     aplicarFiltrosYOrdenamiento();
   };
 
-  const handleMostrarFormulario = () => {
-    if (asignacionSeleccionada) {
-      setShowForm(true);
-    } else {
-      alert("Por favor, seleccione una asignación.");
-    }
-  };
-
   const handleActualizarAsignacion = async ({
     asignacionId,
     cantidadDisponible,
@@ -73,32 +69,83 @@ const Asignaciones = () => {
     cantidadAsignada: number;
     insumoId: number;
   }) => {
-    try {
-      await updateAsignacion({
-        asignacionId,
-        cantidadDisponible,
-        cantidadAsignada,
-        insumoId,
-      });
-      const data = await getAsignaciones();
-      setAsignaciones(data);
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Estás por actualizar la asignación",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, actualizar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        if (cantidadDisponible < cantidadAsignada) {
+          await Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Insumos insuficientes",
+          });
+          return;
+        }
+        try {
+          let updated = await updateAsignacion({
+            asignacionId,
+            cantidadDisponible,
+            cantidadAsignada,
+            insumoId,
+          });
+          if (updated.error) {
+            Swal.fire("Error", "Error al asignar, inténtalo de nuevo", "error");
+            return;
+          }
+          const data = await getAsignaciones();
+          setAsignaciones(data);
 
-      setShowForm(false);
-      setAsignacionSeleccionada(null);
-    } catch (error) {
-      console.error("Error al actualizar la asignación:", error);
-    }
+          setAsignacionSeleccionada(null);
+          Swal.fire("Éxito", "Asignacion actualizada correctamente", "success");
+        } catch (error) {
+          console.error("Error al actualizar la asignación:", error);
+          Swal.fire(
+            "Error",
+            "Error al actualizar, inténtalo de nuevo",
+            "error"
+          );
+        }
+      }
+    });
   };
 
   const handleOrder = (event: any) => {
     setSortType(event.target.value);
-    aplicarFiltrosYOrdenamiento();
+    // aplicarFiltrosYOrdenamiento();
   };
 
   const handleBorrarAsignacion = async (id: number) => {
-    const eliminado = await removeAsignacion(id);
-    alert(eliminado);
-    setActualizar(actualizar + 1);
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "No podrás revertir esto",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, bórralo",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const eliminado = await removeAsignacion(id);
+        if (eliminado.error) {
+          Swal.fire(
+            "Error",
+            "Error al eliminar la asignación, inténtalo de nuevo",
+            "error"
+          );
+        } else {
+          Swal.fire("Eliminado", "La asignación ha sido eliminada.", "success");
+          setActualizar(actualizar + 1);
+        }
+      }
+    });
   };
 
   return (
@@ -107,7 +154,27 @@ const Asignaciones = () => {
       <Link href="/organizacionDash">
         <button>Regresar</button>
       </Link>
-      <button onClick={handleMostrarFormulario}>Asignar</button>
+      <button
+        onClick={() => {
+          if (asignacionSeleccionada) {
+            handleActualizarAsignacion({
+              asignacionId: asignacionSeleccionada.asignacionId,
+              cantidadDisponible: asignacionSeleccionada.cantidadDisponible,
+              cantidadAsignada: asignacionSeleccionada.cantidadAsignada,
+              insumoId: asignacionSeleccionada.insumoId,
+            });
+          } else {
+            Swal.fire({
+              icon: "warning",
+              title: "Atención",
+              text: "Debes seleccionar una solicitud primero.",
+            });
+          }
+        }}
+      >
+        Asignar
+      </button>
+
       <select onChange={handleOrder}>
         <option value="">Seleccione para ordenar</option>
         <option value="mayor-casos-covid">Mayor casos covid</option>
@@ -151,7 +218,7 @@ const Asignaciones = () => {
         ) : null
       )}
 
-      {showForm && (
+      {/* {showForm && (
         <div>
           <h1>Formulario de Asignación</h1>
           <p>Hospital: {asignacionSeleccionada.nombreHospital}</p>
@@ -173,9 +240,9 @@ const Asignaciones = () => {
             }
           >
             Enviar
-          </button>
+          </button> 
         </div>
-      )}
+      )}*/}
     </div>
   );
 };

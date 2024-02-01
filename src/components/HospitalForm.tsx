@@ -1,6 +1,7 @@
 import { saveHospital } from "@/services/organizacionDash.services";
 import React, { useState } from "react";
 import validateHospitalForm from "@/utils/validateHospitalForm";
+import Swal from "sweetalert2";
 
 const HospitalForm = ({ onActualizar }: { onActualizar: any }) => {
   const [errors, setErrors] = useState<any>({});
@@ -10,20 +11,34 @@ const HospitalForm = ({ onActualizar }: { onActualizar: any }) => {
   });
   const [disabled, setDisabled] = useState(true);
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     const nuevoHospital = {
       nombre: input.nombre,
       numeroCasosCovidUltimoMes: input.numeroCasosCovidUltimoMes,
     };
 
+    Swal.fire("Error", "Error en registro de casos, intente de nuevo", "error");
     if (Object.keys(errors).length === 0) {
-      saveHospital(nuevoHospital);
+      let saved = await saveHospital(nuevoHospital);
       setInput({
         nombre: "",
         numeroCasosCovidUltimoMes: "",
       });
       onActualizar();
+      if (saved.error) {
+        Swal.fire(
+          "Error",
+          "Error en registro de casos, intente de nuevo",
+          "error"
+        );
+        return;
+      }
+      Swal.fire(
+        "Éxito",
+        "Registro de casos actualizado correctamente",
+        "success"
+      );
     }
   };
 

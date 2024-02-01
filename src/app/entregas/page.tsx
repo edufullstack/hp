@@ -7,13 +7,13 @@ import {
   saveEntregas,
   // actualizarAsignacion,
 } from "@/services/organizacionDash.services";
+import Swal from "sweetalert2";
 
 const Entregas = () => {
   const [asignaciones, setAsignaciones] = useState([]);
   const [asignacionSeleccionada, setAsignacionSeleccionada] =
     useState<any>(null);
   const [entregas, setEntregas] = useState([]);
-  const [showForm, setShowForm] = useState(false);
   const [terminoBusqueda, setTerminoBusqueda] = useState("");
   const [asignacionesFiltradas, setAsignacionesFiltradas] = useState([]);
   const [entregasFiltradas, setEntregasFiltradas] = useState([]);
@@ -32,18 +32,10 @@ const Entregas = () => {
     };
     obtenerEntregas();
     obtenerAsignaciones();
-  }, []);
+  }, [actualizar]);
 
   const handleSeleccionarAsignacion = (asignacion: any) => {
     setAsignacionSeleccionada(asignacion);
-  };
-
-  const handleMostrarFormulario = () => {
-    if (asignacionSeleccionada) {
-      setShowForm(true);
-    } else {
-      alert("Por favor, seleccione una asignación.");
-    }
   };
 
   const handleActualizarEntrega = async ({
@@ -59,15 +51,50 @@ const Entregas = () => {
     cantidadAsignada: number;
     cantidadTotalEnBodega: number;
   }) => {
+    if (cantidadTotalEnBodega < cantidadAsignada) {
+      await Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Insumos insuficientes en bodega",
+      });
+      return;
+    }
+
     let cantidadActualizarBodega = cantidadTotalEnBodega - cantidadAsignada;
-    await saveEntregas({
-      asignacionId,
-      hospitalId,
-      insumoId,
-      cantidadAsignada,
-      cantidadActualizarBodega,
-    });
-    setActualizar(actualizar + 1);
+
+    try {
+      let result = await saveEntregas({
+        asignacionId,
+        hospitalId,
+        insumoId,
+        cantidadAsignada,
+        cantidadActualizarBodega,
+      });
+
+      if (result.error) {
+        await Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No se pudo actualizar la entrega, inténtalo de nuevo",
+        });
+        return;
+      }
+
+      await Swal.fire({
+        icon: "success",
+        title: "Éxito",
+        text: "La entrega ha sido actualizada correctamente",
+      });
+
+      setActualizar(actualizar + 1);
+    } catch (error) {
+      console.error("Error al actualizar la entrega:", error);
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo actualizar la entrega, inténtalo de nuevo",
+      });
+    }
   };
 
   const handleSearch = () => {
@@ -101,7 +128,28 @@ const Entregas = () => {
       <Link href="/organizacionDash">
         <button>Regresar</button>
       </Link>
-      <button onClick={handleMostrarFormulario}>Entregar</button>
+      <button
+        onClick={() => {
+          if (!asignacionSeleccionada) {
+            Swal.fire({
+              icon: "warning",
+              title: "Atención",
+              text: "Por favor, seleccione una asignación primero.",
+            });
+          } else {
+            handleActualizarEntrega({
+              asignacionId: asignacionSeleccionada.asignacionId,
+              hospitalId: asignacionSeleccionada.hospitalId,
+              insumoId: asignacionSeleccionada.insumoId,
+              cantidadAsignada: asignacionSeleccionada.cantidadAsignada,
+              cantidadTotalEnBodega:
+                asignacionSeleccionada.cantidadTotalEnBodega,
+            });
+          }
+        }}
+      >
+        Entregar
+      </button>
 
       <input
         type="text"
@@ -129,33 +177,6 @@ const Entregas = () => {
           </div>
         ))}
 
-      {showForm && (
-        <div>
-          <h1>Formulario de entregas</h1>
-          <p>Hospital: {asignacionSeleccionada.nombreHospital}</p>
-          <p>Numero de casos covid: {asignacionSeleccionada.casosCovid}</p>
-          <p>Insumo: {asignacionSeleccionada.nombreInsumo}</p>
-          <p>
-            Cantidad en bodega: {asignacionSeleccionada.cantidadTotalEnBodega}
-          </p>
-          <p>Cantidad asignada: {asignacionSeleccionada.cantidadAsignada}</p>
-          <p>Asignado: {asignacionSeleccionada.asignado ? "Si" : "No"}</p>
-          <button
-            onClick={() =>
-              handleActualizarEntrega({
-                asignacionId: asignacionSeleccionada.asignacionId,
-                hospitalId: asignacionSeleccionada.hospitalId,
-                insumoId: asignacionSeleccionada.insumoId,
-                cantidadAsignada: asignacionSeleccionada.cantidadAsignada,
-                cantidadTotalEnBodega:
-                  asignacionSeleccionada.cantidadTotalEnBodega,
-              })
-            }
-          >
-            Enviar
-          </button>
-        </div>
-      )}
       <h2>Entregas</h2>
       {entregasFiltradas.length > 0 ? (
         entregasFiltradas.map((entrega: any) =>
