@@ -192,7 +192,7 @@ const Asignaciones = () => {
 						<Button onClick={handleBusqueda}>Buscar</Button>
 					</div>
 				</div>
-				<select onChange={handleOrder} className="select">
+				<select onChange={handleOrder} className="select right">
 					<option value="">Seleccione para ordenar</option>
 					<option value="mayor-casos-covid">Mayor casos covid</option>
 					<option value="menor-casos-covid">Menor casos covid</option>
