@@ -15,7 +15,7 @@ import styles from "../page.module.css";
 import "./insumos.css";
 
 export default function Insumos() {
-	const [showCrear, setShowCrear] = useState(true);
+	const [showCrear, setShowCrear] = useState(false);
 	const [actualizar, setActualizar] = useState(0);
 	const [insumos, setInsumos] = useState([]);
 	const [hospitales, setHospitales] = useState([]);
@@ -90,15 +90,23 @@ export default function Insumos() {
 							}}
 						/>
 					) : null}
-					{insumos
-						.filter((item: any) => !item.borrado)
-						.map((item: any, index: number) => (
-							<InsumosComponent
-								key={index}
-								item={item}
-								onBorrar={() => handleBorrarInsumo(item.insumoId)}
-							/>
-						))}
+					<>
+						<div className="table_row table_row_insumos">
+							<p>Tipo</p>
+							<p>Cantidad total en bodega</p>
+							<p>Cantidad disponible</p>
+							<p>Borrar</p>
+						</div>
+						{insumos
+							.filter((item: any) => !item.borrado)
+							.map((item: any, index: number) => (
+								<InsumosComponent
+									key={index}
+									item={item}
+									onBorrar={() => handleBorrarInsumo(item.insumoId)}
+								/>
+							))}
+					</>
 				</div>
 			</div>
 		</main>

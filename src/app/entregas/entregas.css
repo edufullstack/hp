@@ -1,12 +1,10 @@
-.insumos {
+.header_entregas {
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
-	flex-direction: column;
-	width: 100%;
-	.actions {
+	margin-bottom: 1rem;
+	.search {
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
 		gap: 1rem;
 	}
