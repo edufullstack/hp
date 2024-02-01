@@ -14,9 +14,9 @@ const HospitalDashboard = ({ hospitalName }: any) => {
   const [insumos, setInsumos] = useState<boolean>(true);
   const [actualizar, setActualizar] = useState(0);
   const [mostrarPendientes, setMostrarPendientes] = useState(false);
-  const [mostrarEntregados, setMostrarEntregados] = useState(false);
-  const pedidosPendientes = pedidos.filter((item: any) => !item.entregado);
-  const pedidosEntregados = pedidos.filter((item: any) => item.entregado);
+  // const [mostrarEntregados, setMostrarEntregados] = useState(false);
+  // const pedidosPendientes = pedidos.filter((item: any) => !item.entregado);
+  // const pedidosEntregados = pedidos.filter((item: any) => item.entregado);
 
   const solicitarInsumos = () => {
     setInsumos(false);
@@ -34,7 +34,6 @@ const HospitalDashboard = ({ hospitalName }: any) => {
           setPedidos(pedidosData);
         } catch (error) {
           console.error("Error al obtener los pedidos:", error);
-          // Manejar el error adecuadamente
         }
       }
     };
