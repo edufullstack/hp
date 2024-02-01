@@ -9,6 +9,7 @@ import { getHospitalInfo } from "@/services/hospitalDash.services";
 import { setOrganizationInfo } from "@/services/organizacionDash.services";
 import Button from "@/components/Button/Button";
 import InputText from "@/components/Input/Input";
+import Image from "next/image";
 
 export default function Home() {
 	const [disabled, setDisabled] = useState(true);
@@ -84,7 +85,9 @@ export default function Home() {
 			) : showLoginForm === "hospital" ? (
 				<form onSubmit={handleSubmitHospital} className="form_">
 					<div className="subtitle_back">
-						<Button onClick={() => handleSelection("")}>Regresar</Button>
+						<Button type="icon" onClick={() => handleSelection("")}>
+							<Image alt="back" width={20} height={20} src="./back.svg" />
+						</Button>
 						<h2 className="subtitle">Ingrese nombre de hospital</h2>
 					</div>
 
@@ -108,7 +111,9 @@ export default function Home() {
 				<div className="login_company">
 					<form onSubmit={handleSubmitOrganization}>
 						<div className="subtitle_back">
-							<Button onClick={() => handleSelection("")}>Regresar</Button>
+							<Button type="icon" onClick={() => handleSelection("")}>
+								<Image alt="back" width={20} height={20} src="./back.svg" />
+							</Button>
 							<h2 className="subtitle">Login Simulado</h2>
 						</div>
 						<div className="form_fields">

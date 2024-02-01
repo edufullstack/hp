@@ -1,11 +1,11 @@
 const Footer = () => {
-  return (
-    <footer>
-      <p>
-        &copy; {new Date().getFullYear()} Mi Empresa. Todos los derechos
-        reservados.
-      </p>
-      <ul >
+	return (
+		<footer>
+			<p>
+				&copy; {new Date().getFullYear()} Mi Empresa. Todos los derechos
+				reservados.
+			</p>
+			{/*   <ul >
         <li>
           <a href="/about">Acerca de Nosotros</a>
         </li>
@@ -18,9 +18,9 @@ const Footer = () => {
         <li>
           <a href="/terms">Términos y Condiciones</a>
         </li>
-      </ul>
-    </footer>
-  );
+      </ul> */}
+		</footer>
+	);
 };
 
 export default Footer;
