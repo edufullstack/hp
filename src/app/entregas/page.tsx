@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
 	getAsignaciones,
@@ -39,6 +39,15 @@ const Entregas = () => {
 		obtenerAsignaciones();
 	}, [actualizar]);
 
+	const hasPendingEntregas = useMemo(() => {
+		console.log("entregasFiltradas", asignaciones);
+		let flag = false;
+		asignaciones.map((asignacion: any) => {
+			console.log("asignacion", asignacion.borrado);
+			if (!asignacion.borrado) flag = true;
+		});
+		return flag;
+	}, [entregasFiltradas]);
 	const handleSeleccionarAsignacion = (asignacion: any) => {
 		setAsignacionSeleccionada(asignacion);
 	};
@@ -150,6 +159,7 @@ const Entregas = () => {
 								title: "Atención",
 								text: "Por favor, seleccione una asignación primero.",
 							});
+							asignaciones;
 						} else {
 							handleActualizarEntrega({
 								asignacionId: asignacionSeleccionada.asignacionId,
@@ -174,7 +184,7 @@ const Entregas = () => {
 					<Button onClick={handleSearch}>Buscar</Button>
 				</div>
 			</div>
-			{asignacionesFiltradas.length > 0 ? (
+			{hasPendingEntregas ? (
 				<>
 					<div className="table_header table_row_entregas">
 						<p>
@@ -201,7 +211,7 @@ const Entregas = () => {
 					</div>
 					{asignacionesFiltradas
 						.filter(
-							(asignacion: any) => asignacion.asignado && !asignacion.borrado
+							(asignacion: any) => !asignacion.asignado && !asignacion.borrado
 						)
 						.map((asignacion: any) => (
 							<div

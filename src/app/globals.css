@@ -235,7 +235,7 @@ a {
 	display: grid;
 	align-items: center;
 	gap: 0.5rem;
-	width: 100%;
+	width: 90%;
 	padding-bottom: 0.2rem;
 	border-bottom: 1px solid #00000020;
 }
@@ -244,7 +244,7 @@ a {
 	align-items: center;
 	gap: 0.5rem;
 	margin-bottom: 1rem;
-	width: 100%;
+	width: 90%;
 }
 .table_row_insumos {
 	grid-template-columns: 1fr 1fr 1fr 5rem;

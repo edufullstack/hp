@@ -153,7 +153,7 @@ const Asignaciones = () => {
 	};
 
 	return (
-		<div>
+		<>
 			<div className="subtitle_back">
 				<Button type="icon" onClick={() => router.push("/organizacionDash")}>
 					<Image alt="back" width={20} height={20} src="./back.svg" />
@@ -162,36 +162,36 @@ const Asignaciones = () => {
 			</div>
 
 			<div className="form_insumos">
-				<Button
-					onClick={() => {
-						if (asignacionSeleccionada) {
-							handleActualizarAsignacion({
-								asignacionId: asignacionSeleccionada.asignacionId,
-								cantidadDisponible: asignacionSeleccionada.cantidadDisponible,
-								cantidadAsignada: asignacionSeleccionada.cantidadAsignada,
-								insumoId: asignacionSeleccionada.insumoId,
-							});
-						} else {
-							Swal.fire({
-								icon: "warning",
-								title: "Atención",
-								text: "Debes seleccionar una solicitud primero.",
-							});
-						}
-					}}>
-					Asignar
-				</Button>
-
-				<div className="search">
-					<InputText
-						id="terminoBusqueda"
-						name="terminoBusqueda"
-						value={terminoBusqueda}
-						onChange={(e: any) => setTerminoBusqueda(e.target.value)}
-					/>
-					<Button onClick={handleBusqueda}>Buscar</Button>
+				<div className="asignar_insumos">
+					<Button
+						onClick={() => {
+							if (asignacionSeleccionada) {
+								handleActualizarAsignacion({
+									asignacionId: asignacionSeleccionada.asignacionId,
+									cantidadDisponible: asignacionSeleccionada.cantidadDisponible,
+									cantidadAsignada: asignacionSeleccionada.cantidadAsignada,
+									insumoId: asignacionSeleccionada.insumoId,
+								});
+							} else {
+								Swal.fire({
+									icon: "warning",
+									title: "Atención",
+									text: "Debes seleccionar una solicitud primero.",
+								});
+							}
+						}}>
+						Asignar
+					</Button>
+					<div className="search">
+						<InputText
+							id="terminoBusqueda"
+							name="terminoBusqueda"
+							value={terminoBusqueda}
+							onChange={(e: any) => setTerminoBusqueda(e.target.value)}
+						/>
+						<Button onClick={handleBusqueda}>Buscar</Button>
+					</div>
 				</div>
-
 				<select onChange={handleOrder} className="select">
 					<option value="">Seleccione para ordenar</option>
 					<option value="mayor-casos-covid">Mayor casos covid</option>
@@ -268,7 +268,7 @@ const Asignaciones = () => {
           </button> 
         </div>
       )}*/}
-		</div>
+		</>
 	);
 };
 
