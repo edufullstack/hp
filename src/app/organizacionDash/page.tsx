@@ -21,8 +21,6 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
   const [hospitales, setHospitales] = useState([]);
   const [showHospitales, setShowHospitales] = useState(false);
   const [showCrearHospital, setShowCrearHospital] = useState(false);
-  const [entregas, setEntregas] = useState([]);
-  const [showEntregas, setShowEntregas] = useState(false);
 
   useEffect(() => {
     const fetchInsumos = async () => {
@@ -36,9 +34,6 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
     fetchInsumos();
     fetchHospital();
   }, [actualizar]);
-
-  const [busqueda, setBusqueda] = useState("");
-  // Otras variables de estado que puedas necesitar
 
   const handleInsumo = () => {
     setShowInsumos(!showInsumos);
@@ -61,12 +56,6 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
     setShowCrearHospital(!showCrearHospital);
   };
 
-  const handleCrearEntrega = () => {
-    // Lógica para crear entrega
-  };
-
-  const handleEliminarHospital = (id: number) => {};
-
   return (
     <div>
       <h1>Dashboard de la Organización</h1>
@@ -76,49 +65,59 @@ const OrganizationDashboard = ({ hospitalName }: any) => {
       {showInsumos ? (
         <button onClick={handleShowCrearInsumo}>Crear insumo</button>
       ) : null}
-      {showCrear ? (
-        <InsumoForm
-          onActualizar={() => {
-            setActualizar((prev) => prev + 1);
-          }}
-        />
+      {showInsumos ? (
+        <>
+          {showCrear && (
+            <InsumoForm
+              onActualizar={() => {
+                setActualizar((prev) => prev + 1);
+              }}
+            />
+          )}
+          {insumos.filter((item: any) => !item.borrado).length > 0 ? (
+            insumos
+              .filter((item: any) => !item.borrado)
+              .map((item: any, index: number) => (
+                <InsumosComponent
+                  key={index}
+                  item={item}
+                  onBorrar={() => handleBorrarInsumo(item.insumoId)}
+                />
+              ))
+          ) : (
+            <p>No existen insumos</p>
+          )}
+        </>
       ) : null}
-      {showInsumos
-        ? insumos
-            .filter((item: any) => !item.borrado)
-            .map((item: any, index: number) => (
-              <InsumosComponent
-                key={index}
-                item={item}
-                onBorrar={() => handleBorrarInsumo(item.insumoId)}
-              />
-            ))
-        : null}
 
       <button onClick={handleHospital}>Hospitales</button>
       {showHospitales ? (
         <button onClick={handleShowCrearHospital}>Crear hospital</button>
       ) : null}
-      {showCrearHospital ? (
-        <HospitalForm
-          onActualizar={() => {
-            setActualizar((prev) => prev + 1);
-          }}
-        />
-      ) : null}
-      {showHospitales
-        ? hospitales
-            .filter((item: any) => !item.borrado)
-            .map((hospital: any, index: number) => {
-              return (
+      {showHospitales ? (
+        <>
+          {showCrearHospital && (
+            <HospitalForm
+              onActualizar={() => {
+                setActualizar((prev) => prev + 1);
+              }}
+            />
+          )}
+          {hospitales.filter((item: any) => !item.borrado).length > 0 ? (
+            hospitales
+              .filter((item: any) => !item.borrado)
+              .map((hospital: any, index: number) => (
                 <HospitalCard
                   key={index}
                   item={hospital}
                   onEliminar={() => handleBorrarInsumo(hospital.hospitalId)}
                 />
-              );
-            })
-        : null}
+              ))
+          ) : (
+            <p>No existen hospitales</p>
+          )}
+        </>
+      ) : null}
 
       <Link href={"/asignaciones"}>
         <button>Asignar insumos</button>
