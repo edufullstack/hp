@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://hospitalapp-production.up.railway.app",
     credentials: true,
     methods: "GET,POST,OPTIONS,PUT,DELETE",
     allowedHeaders: "Origin,X-Requested-With,Content-Type,Accept",
