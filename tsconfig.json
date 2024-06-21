@@ -3,8 +3,7 @@
     "resolveJsonModule": true,
     /* other options */
     "emitDeclarationOnly": false,
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
+
     "module": "nodenext",
     "target": "es2022",
     /* Modules */
@@ -19,6 +18,6 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "index.ts"],
   "exclude": ["node_modules"]
 }
