@@ -1,18 +1,14 @@
 import { Sequelize, DataTypes } from "sequelize";
 
-export default (sequelize: Sequelize) => {
+export default (sequelize) => {
   sequelize.define(
-    "EntregaInsumo",
+    "AsignacionInsumo",
     {
-      entregaId: {
+      asignacionId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
-      },
-      asignacionId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
       },
       hospitalId: {
         type: DataTypes.INTEGER,
@@ -22,7 +18,7 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      cantidadEntregada: {
+      cantidadAsignada: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0,
@@ -30,9 +26,14 @@ export default (sequelize: Sequelize) => {
           min: 0,
         },
       },
-      fechaEntrega: {
+      fechaAsignacion: {
         type: DataTypes.DATE,
         allowNull: false,
+      },
+      asignado: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
       borrado: {
         type: DataTypes.BOOLEAN,

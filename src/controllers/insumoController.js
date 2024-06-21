@@ -1,4 +1,3 @@
-import { NextFunction, Request, Response } from "express";
 import {
   getAll,
   getById,
@@ -8,11 +7,7 @@ import {
 } from "../services/insumoService";
 import { InsumoType } from "../types/serviceTypes";
 
-export const getInsumos = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getInsumos = async (req, res, next) => {
   try {
     const insumos = await getAll();
     res.status(200).json(insumos);
@@ -20,11 +15,7 @@ export const getInsumos = async (
     next(error);
   }
 };
-export const getInsumosById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getInsumosById = async (req, res, next) => {
   const { id } = req.params;
   try {
     const insumos = await getById(Number(id));
@@ -34,11 +25,7 @@ export const getInsumosById = async (
   }
 };
 
-export const saveInsumo = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const saveInsumo = async (req, res, next) => {
   try {
     const { tipo, cantidadTotalEnBodega, cantidadDisponible, borrado } =
       req.body;
@@ -55,14 +42,10 @@ export const saveInsumo = async (
   }
 };
 
-export const updateInsumo = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateInsumo = async (req, res, next) => {
   const { id } = req.params;
   const { tipo, cantidadTotalEnBodega, cantidadDisponible, borrado } = req.body;
-  const insumo: InsumoType = {
+  const insumo = {
     tipo,
     cantidadTotalEnBodega,
     cantidadDisponible,
@@ -76,11 +59,7 @@ export const updateInsumo = async (
   }
 };
 
-export const removeInsumo = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const removeInsumo = async (req, res, next) => {
   const { insumoId } = req.params;
   try {
     await remove(Number(insumoId));

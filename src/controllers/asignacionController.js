@@ -6,13 +6,8 @@ import {
   update,
   remove,
 } from "../services/asignacionService";
-import { AsignacionType } from "../types/serviceTypes";
 
-export const getAsignaciones = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getAsignaciones = async (req, res, next) => {
   try {
     const asignaciones = await getAll();
     res.status(200).json(asignaciones);
@@ -20,11 +15,7 @@ export const getAsignaciones = async (
     next(error);
   }
 };
-export const getAsignacionesById = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getAsignacionesById = async (req, res, next) => {
   const { id } = req.params;
   try {
     const asignaciones = await getById(Number(id));
@@ -34,11 +25,7 @@ export const getAsignacionesById = async (
   }
 };
 
-export const saveAsignaciones = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const saveAsignaciones = async (req, res, next) => {
   const {
     hospitalId,
     insumoId,
@@ -47,7 +34,7 @@ export const saveAsignaciones = async (
     borrado,
     asignado,
   } = req.body;
-  let asignacion: AsignacionType = {
+  let asignacion = {
     hospitalId,
     insumoId,
     cantidadAsignada,
@@ -63,11 +50,7 @@ export const saveAsignaciones = async (
   }
 };
 
-export const updateAsignaciones = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateAsignaciones = async (req, res, next) => {
   const { id } = req.params;
   console.log(id);
   const {
@@ -78,7 +61,7 @@ export const updateAsignaciones = async (
     borrado,
     asignado,
   } = req.body;
-  const asignacion: AsignacionType = {
+  const asignacion = {
     hospitalId,
     insumoId,
     cantidadAsignada,
@@ -96,11 +79,7 @@ export const updateAsignaciones = async (
   }
 };
 
-export const removeAsignaciones = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const removeAsignaciones = async (req, res, next) => {
   const { id } = req.params;
   try {
     await remove(Number(id));

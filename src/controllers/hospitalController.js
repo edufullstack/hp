@@ -1,4 +1,3 @@
-import { NextFunction, Request, Response } from "express";
 import {
   getAll,
   getByName,
@@ -8,15 +7,11 @@ import {
 } from "../services/hospitalService";
 import { HospitalType } from "../types/serviceTypes";
 
-export const getHospitals = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
+export const getHospitals = async (req, res, next) => {
   const { name } = req.query;
 
   try {
-    let hospitals: HospitalType[] | HospitalType | null;
+    let hospitals;
 
     if (typeof name === "string" && name.trim() !== "") {
       const hospital = await getByName(name);
@@ -30,11 +25,7 @@ export const getHospitals = async (
   }
 };
 
-export const saveHospital = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const saveHospital = async (req, res, next) => {
   const { nombre, numeroCasosCovidUltimoMes, borrado } = req.body;
   let hospital = { nombre, numeroCasosCovidUltimoMes, borrado };
   try {
@@ -45,14 +36,10 @@ export const saveHospital = async (
   }
 };
 
-export const updateHospital = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateHospital = async (req, res, next) => {
   const { id } = req.params;
   const { nombre, numeroCasosCovidUltimoMes, borrado } = req.body;
-  const hospital: HospitalType = { nombre, numeroCasosCovidUltimoMes, borrado };
+  const hospital = { nombre, numeroCasosCovidUltimoMes, borrado };
   try {
     let updated = await update(Number(id), hospital);
     res.status(200).json(updated);
@@ -61,11 +48,7 @@ export const updateHospital = async (
   }
 };
 
-export const removeHospital = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const removeHospital = async (req, res, next) => {
   const { id } = req.params;
   try {
     await remove(Number(id));

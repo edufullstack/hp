@@ -1,21 +1,28 @@
 import { Sequelize, DataTypes } from "sequelize";
 
-export default (sequelize: Sequelize) => {
+export default (sequelize) => {
   sequelize.define(
-    "Hospital",
+    "Insumo",
     {
-      hospitalId: {
+      insumoId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
-      nombre: {
+      tipo: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
-      numeroCasosCovidUltimoMes: {
+      cantidadTotalEnBodega: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+          min: 0,
+        },
+      },
+      cantidadDisponible: {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0,

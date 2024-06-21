@@ -1,12 +1,7 @@
-import { NextFunction, Request, Response } from "express";
 import { getAll, save, update, remove } from "../services/entregaService";
 import { EntregaType } from "../types/serviceTypes";
 
-export const getEntregas = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getEntregas = async (req, res, next) => {
   try {
     const entregas = await getAll();
     res.status(200).json(entregas);
@@ -15,11 +10,7 @@ export const getEntregas = async (
   }
 };
 
-export const saveEntregas = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const saveEntregas = async (req, res, next) => {
   const {
     asignacionId,
     hospitalId,
@@ -28,7 +19,7 @@ export const saveEntregas = async (
     fechaEntrega,
     borrado,
   } = req.body;
-  let entrega: EntregaType = {
+  let entrega = {
     asignacionId,
     hospitalId,
     insumoId,
@@ -44,11 +35,7 @@ export const saveEntregas = async (
   }
 };
 
-export const updateEntregas = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const updateEntregas = async (req, res, next) => {
   const { id } = req.params;
   const {
     asignacionId,
@@ -58,7 +45,7 @@ export const updateEntregas = async (
     fechaEntrega,
     borrado,
   } = req.body;
-  const entrega: EntregaType = {
+  const entrega = {
     asignacionId,
     hospitalId,
     insumoId,
@@ -74,11 +61,7 @@ export const updateEntregas = async (
   }
 };
 
-export const removeEntregas = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const removeEntregas = async (req, res, next) => {
   const { id } = req.params;
   try {
     await remove(Number(id));

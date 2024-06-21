@@ -1,11 +1,10 @@
 import { Insumo } from "../config/db";
-import { InsumoType } from "../types/serviceTypes";
 
 const getAll = async () => {
   return await Insumo.findAll();
 };
-const getById = async (id: number) => {
-  let insumos: any = await Insumo.findAll({
+const getById = async (id) => {
+  let insumos = await Insumo.findAll({
     where: { insumoId: id },
   });
 
@@ -16,11 +15,11 @@ const getById = async (id: number) => {
   return insumos;
 };
 
-const save = async (insumo: InsumoType) => {
+const save = async (insumo) => {
   return await Insumo.create(insumo);
 };
 
-const update = async (id: number, insumo: InsumoType) => {
+const update = async (id, insumo) => {
   await Insumo.update(
     {
       tipo: insumo.tipo,
@@ -36,7 +35,7 @@ const update = async (id: number, insumo: InsumoType) => {
   return updated;
 };
 
-const remove = async (insumoId: number) => {
+const remove = async (insumoId) => {
   await Insumo.update(
     { borrado: true },
     {

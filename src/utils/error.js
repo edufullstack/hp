@@ -1,26 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 
-interface ICustomError {
-  statusCode: number;
-  message: string;
-  name: string;
-}
-
 class CustomError extends Error {
-  statusCode: number;
+  statusCode;
 
-  constructor({ statusCode, message }: ICustomError) {
+  constructor({ statusCode, message }) {
     super(message);
     this.statusCode = statusCode;
   }
 }
 
-const handleError = (
-  err: ICustomError,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const handleError = (err, req, res, next) => {
   const { statusCode = 500, message } = err;
 
   console.error(err);

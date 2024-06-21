@@ -1,14 +1,14 @@
 import { Hospital } from "../config/db";
-import { HospitalType } from "../types/serviceTypes";
 
-const getAll = async (): Promise<HospitalType[]> => {
-  return (await Hospital.findAll()) as unknown as HospitalType[];
+
+const getAll = async () => {
+  return (await Hospital.findAll()) as unknown as [];
 };
 
-const getByName = async (name: string): Promise<HospitalType | null> => {
+const getByName = async (name) => {
   let hospitalFound = (await Hospital.findOne({
     where: { nombre: name },
-  })) as unknown as HospitalType | null;
+  })) 
   if (!hospitalFound) {
     throw new Error("Not Found");
   }
@@ -16,14 +16,14 @@ const getByName = async (name: string): Promise<HospitalType | null> => {
   return hospitalFound;
 };
 
-const save = async (hospital: HospitalType) => {
+const save = async (hospital ) => {
   return await Hospital.create({
     nombre: hospital.nombre,
     numeroCasosCovidUltimoMes: hospital.numeroCasosCovidUltimoMes,
   });
 };
 
-const update = async (id: number, updated: HospitalType) => {
+const update = async (id, updated ) => {
   await Hospital.update(
     {
       nombre: updated.nombre,
@@ -38,7 +38,7 @@ const update = async (id: number, updated: HospitalType) => {
   return updatedHospital;
 };
 
-const remove = async (id: number) => {
+const remove = async (id) => {
   await Hospital.update(
     { borrado: true },
     {
